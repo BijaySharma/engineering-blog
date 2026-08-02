@@ -17,7 +17,7 @@ export default function Header() {
           Bijay Sharma
         </Link>
 
-        <nav className="flex items-center gap-6">
+        <nav aria-label="Primary" className="flex items-center gap-6">
           <ul className="flex items-center gap-6 font-sans text-sm">
             {NAV_LINKS.map(({ href, label }) => (
               <li key={href}>

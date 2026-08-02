@@ -8,7 +8,10 @@ export const mdxComponents = {
   ),
   p: (props) => <p className="text-base leading-relaxed mb-5" {...props} />,
   a: (props) => (
-    <a className="text-accent underline underline-offset-2" {...props} />
+    <a
+      className="text-accent underline underline-offset-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      {...props}
+    />
   ),
   ul: (props) => (
     <ul className="list-disc pl-6 mb-5 space-y-2" {...props} />
