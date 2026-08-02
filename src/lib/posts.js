@@ -17,11 +17,30 @@ function slugFromFilename(filename) {
   return withoutExt.replace(/^\d{4}-\d{2}-\d{2}-/, "");
 }
 
+function assertValidFrontmatter(frontmatter, slug, fullPath) {
+  const missing = [];
+
+  if (!frontmatter.title) missing.push("title");
+  if (!slug) missing.push("slug");
+  if (!frontmatter.date) missing.push("date");
+  else if (Number.isNaN(new Date(frontmatter.date).getTime())) {
+    missing.push("date (invalid date value)");
+  }
+  if (!frontmatter.excerpt) missing.push("excerpt");
+
+  if (missing.length > 0) {
+    throw new Error(
+      `Invalid frontmatter in "${fullPath}": missing required field(s): ${missing.join(", ")}`
+    );
+  }
+}
+
 function readPostFile(filename) {
   const fullPath = path.join(POSTS_DIR, filename);
   const raw = fs.readFileSync(fullPath, "utf8");
   const { data: frontmatter, content } = matter(raw);
   const slug = frontmatter.slug || slugFromFilename(filename);
+  assertValidFrontmatter(frontmatter, slug, fullPath);
   return { filename, frontmatter, content, slug };
 }
 
