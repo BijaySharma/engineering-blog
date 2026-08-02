@@ -14,3 +14,36 @@ The mechanism behind this has two halves. The first is a Custom Resource Definit
 The core of every controller is the reconciliation loop, and it's worth walking through concretely because the pattern is deceptively simple and shows up everywhere in Kubernetes' own internals, not just in third-party operators. A reconciler is a function that takes the identity of one object — say, `PostgresCluster "orders-db"` — and does three things: read the object's current spec (the desired state, as the user wrote it), read the current state of the world (query the actual StatefulSet, Pods, and PersistentVolumeClaims that back this cluster), and then compute and apply whatever changes close the gap between the two. Critically, the loop does not try to be clever about *what changed* since the last run. It re-derives the correct action from scratch every time it fires, which is what makes it resilient to missed events, restarts, and races — if the controller crashes mid-reconciliation, the next run just recomputes the diff and continues, with no lost state to recover.
 
 Concretely: suppose the `orders-db` `PostgresCluster` spec says `replicas: 3`, but a node failure has taken one Postgres Pod down, leaving only 2 running. The controller's watch mechanism receives an update event (in this case, a Pod deletion), which enqueues `orders-db` for reconciliation. The reconciler reads the spec (`replicas: 3`), lists the actual Pods matching that cluster's labels (finds 2), and sees a gap. It doesn't just naively scale up, though — a real Postgres operator has to reason about roles too, so it checks whether the missing Pod was the primary or a replica. If it was a replica, the controller creates a new Pod, waits for it to join as a streaming replica, and updates the `PostgresCluster` status subresource to reflect the current member list. If it was the primary, the controller has more to do: promote one of the remaining replicas, update the Service selector or connection secret that points application traffic at the primary, and only then create a replacement Pod to rejoin as a new replica. Either way, the loop runs again on the next event — or on a periodic resync — and if everything already matches the desired state, it does nothing at all. That idempotence is the whole point: operators encode operational runbooks as code that keeps re-checking its own work, rather than as one-shot scripts that assume the world stood still while they ran.
+
+Stripped to its essentials, a reconciler for this looks roughly like the sketch below — read desired state, read actual state, diff, act:
+
+```go
+func (r *PostgresClusterReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+	var cluster postgresv1.PostgresCluster
+	if err := r.Get(ctx, req.NamespacedName, &cluster); err != nil {
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	var pods corev1.PodList
+	if err := r.List(ctx, &pods, client.MatchingLabels(cluster.PodLabels())); err != nil {
+		return ctrl.Result{}, err
+	}
+
+	desired := cluster.Spec.Replicas
+	actual := len(pods.Items)
+
+	if actual == desired {
+		return ctrl.Result{}, nil // nothing to do — already converged
+	}
+
+	if primaryMissing(pods, cluster) {
+		if err := r.promoteReplica(ctx, &cluster, pods); err != nil {
+			return ctrl.Result{}, err
+		}
+	}
+
+	return ctrl.Result{}, r.createReplacementPod(ctx, &cluster)
+}
+```
+
+Nothing here tracks *what changed since last time* — every invocation starts from the same two reads and recomputes the gap, which is exactly what makes it safe to re-run after a crash, a missed watch event, or a plain periodic resync.

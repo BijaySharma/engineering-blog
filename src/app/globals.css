@@ -54,3 +54,49 @@
     animation: fade-slide-up 0.6s ease-out both;
   }
 }
+
+/*
+ * rehype-highlight token colors for fenced code blocks. Kept restrained
+ * (design-token colors only, no imported dev-tool theme) per the "no
+ * terminal/hacker aesthetic" guardrail — differentiation comes from
+ * color/weight/italics within the existing palette, not new hues.
+ */
+.hljs-comment,
+.hljs-quote {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link,
+.hljs-string,
+.hljs-title,
+.hljs-name,
+.hljs-type,
+.hljs-attribute,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+  color: var(--accent);
+}
+
+.hljs-deletion,
+.hljs-number {
+  color: var(--muted);
+}
+
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-emphasis {
+  font-weight: 600;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}
