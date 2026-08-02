@@ -34,3 +34,23 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Blog content
+
+Blog posts live under `content/blog/posts/`. Today that directory is scaffolded
+locally in this repo, but it is intended to become a **git submodule** pointing
+at a separate content repository, so that blog content can be authored and
+versioned independently of the application code.
+
+Once that submodule is wired up, cloning this repo will need one of:
+
+```bash
+git clone --recurse-submodules <repo-url>
+# or, if you already cloned without --recurse-submodules:
+git submodule update --init --recursive
+```
+
+Whichever host this app is deployed to must run
+`git submodule update --init --recursive` before `next build`, or otherwise
+natively support recursive submodule checkout during its build step —
+otherwise `content/blog/posts/` will be empty at build time.
