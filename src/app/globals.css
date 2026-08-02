@@ -31,3 +31,26 @@
   --font-sans: var(--font-inter);
   --font-serif: var(--font-source-serif);
 }
+
+/*
+ * Subtle entrance animation for the landing page hero. Only applied when
+ * the user has no preference against motion — `prefers-reduced-motion`
+ * gates the keyframes entirely rather than shortening/disabling them, so
+ * reduced-motion users simply see the final state with no animation.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes fade-slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-slide-up {
+    animation: fade-slide-up 0.6s ease-out both;
+  }
+}

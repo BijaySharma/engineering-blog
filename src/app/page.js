@@ -1,65 +1,111 @@
-import Image from "next/image";
+import Link from "next/link";
+import PostCard from "@/components/PostCard";
+import { getAllPosts } from "@/lib/posts";
+
+const FOCUS_AREAS = [
+  {
+    title: "Kubernetes-native systems",
+    body: "I write custom controllers and CRDs that teach Kubernetes new vocabulary — reconciliation loops that continuously bring a cluster's real state in line with its declared spec, and service mesh configuration for traffic that has to survive rollouts and failures.",
+  },
+  {
+    title: "Agentic AI infra",
+    body: "I build multi-agent workflows with LangGraph, modeling agent handoffs as explicit state graphs rather than one long prompt, so different steps can use different tools, context, and failure handling.",
+  },
+  {
+    title: "Distributed systems fundamentals",
+    body: "Kafka for durable event streams, Temporal for long-running workflows that have to survive restarts, and consensus/reconciliation patterns for keeping distributed state convergent under partial failure.",
+  },
+];
 
 export default function Home() {
+  const recentPosts = getAllPosts().slice(0, 3);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-20 px-6 py-16 sm:py-20">
+      {/* Hero */}
+      <section className="animate-fade-slide-up">
+        <p className="font-sans text-sm font-medium uppercase tracking-wide text-muted">
+          Bijay Sharma
+        </p>
+        <h1 className="mt-3 max-w-[20ch] font-serif text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
+          Software engineer building infrastructure for the agentic era
+        </h1>
+        <p className="mt-5 max-w-[65ch] font-sans text-base leading-relaxed text-muted sm:text-lg">
+          At Acquia, I work on Kubernetes operators and distributed systems,
+          and increasingly on agentic AI tooling built with LangGraph and
+          LangChain. I&apos;m CKAD certified and spend a fair amount of time
+          in the space between infrastructure and orchestration.
+        </p>
+      </section>
+
+      {/* What I work on */}
+      <section aria-labelledby="focus-heading">
+        <h2
+          id="focus-heading"
+          className="font-serif text-2xl font-semibold text-foreground"
+        >
+          What I work on
+        </h2>
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3">
+          {FOCUS_AREAS.map(({ title, body }) => (
+            <div
+              key={title}
+              className="rounded-lg border border-border p-5"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              <h3 className="font-serif text-lg font-semibold text-foreground">
+                {title}
+              </h3>
+              <p className="mt-2 font-sans text-sm leading-relaxed text-muted">
+                {body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Recent writing */}
+      <section aria-labelledby="recent-writing-heading">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2
+            id="recent-writing-heading"
+            className="font-serif text-2xl font-semibold text-foreground"
+          >
+            Recent writing
+          </h2>
+          <Link
+            href="/blog"
+            className="font-sans text-sm text-accent transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
+          >
+            View all
+          </Link>
+        </div>
+
+        {recentPosts.length > 0 ? (
+          <div className="mt-2">
+            {recentPosts.map((post) => (
+              <PostCard key={post.slug} post={post} />
+            ))}
+          </div>
+        ) : (
+          <p className="mt-6 font-sans text-sm text-muted">
+            Nothing published yet — check back soon.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        )}
+      </section>
+
+      {/* Currently learning */}
+      <section aria-labelledby="currently-learning-heading">
+        <h2
+          id="currently-learning-heading"
+          className="font-serif text-2xl font-semibold text-foreground"
+        >
+          Currently learning
+        </h2>
+        <p className="mt-3 font-sans text-base text-muted">
+          Currently deep in distributed systems + DSA prep — writing up what
+          I learn.
+        </p>
+      </section>
+    </main>
   );
 }
