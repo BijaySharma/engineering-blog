@@ -41,7 +41,7 @@ export async function generateMetadata({ params }) {
   const { frontmatter } = post;
 
   return {
-    title: `${frontmatter.title} | Bijay Sharma`,
+    title: frontmatter.title,
     description: frontmatter.excerpt,
     openGraph: {
       title: frontmatter.title,

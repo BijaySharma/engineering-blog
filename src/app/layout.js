@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -17,7 +18,11 @@ const sourceSerif = Source_Serif_4({
 });
 
 export const metadata = {
-  title: "Bijay Sharma",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Bijay Sharma",
+    template: "%s | Bijay Sharma",
+  },
   description:
     "Software engineer building infrastructure for the agentic era. Writing on Kubernetes operators, distributed systems, and agentic AI tooling.",
 };

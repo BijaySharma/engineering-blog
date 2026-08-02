@@ -2,7 +2,7 @@ import PostCard from "@/components/PostCard";
 import { getAllPosts } from "@/lib/posts";
 
 export const metadata = {
-  title: "Blog | Bijay Sharma",
+  title: "Blog",
   description:
     "Writing on Kubernetes operators, distributed systems, and agentic AI tooling.",
 };
