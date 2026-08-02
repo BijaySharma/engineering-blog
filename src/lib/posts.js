@@ -89,7 +89,9 @@ export function getAllPosts() {
 
 /**
  * Finds the post matching the given slug and returns its full frontmatter
- * plus the raw (uncompiled) markdown/MDX body.
+ * plus the raw (uncompiled) markdown/MDX body. Mirrors getAllPosts()'s
+ * draft filtering: in production, a draft post is treated as not found so
+ * it can't be reached by direct URL even if dynamicParams is misconfigured.
  *
  * @param {string} slug
  * @returns {{ frontmatter: object, content: string } | null}
@@ -100,6 +102,12 @@ export function getPostBySlug(slug) {
   for (const filename of files) {
     const post = readPostFile(filename);
     if (post.slug === slug) {
+      if (
+        process.env.NODE_ENV === "production" &&
+        post.frontmatter.draft === true
+      ) {
+        return null;
+      }
       return { frontmatter: post.frontmatter, content: post.content };
     }
   }

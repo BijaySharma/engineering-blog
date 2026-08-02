@@ -30,6 +30,11 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
 }
 
+// Only slugs returned by generateStaticParams() (i.e. non-draft posts) may
+// resolve. Any other slug — a draft in production, or a nonexistent one —
+// 404s instead of falling through to on-demand rendering.
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
