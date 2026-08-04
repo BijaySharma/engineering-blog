@@ -68,7 +68,7 @@ export default async function PostPage({ params }) {
   const stats = readingTime(content);
 
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-16 sm:py-20">
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-6 py-16 sm:py-20">
       <Link
         href="/blog"
         className="w-fit font-sans text-sm text-muted transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
@@ -104,7 +104,7 @@ export default async function PostPage({ params }) {
           ) : null}
         </header>
 
-        <div className="mt-10 max-w-[65ch]">
+        <div className="mt-10 max-w-[150ch]">
           <MDXRemote
             source={content}
             components={mdxComponents}

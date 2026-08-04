@@ -42,7 +42,7 @@ export default function PostCard({ post }) {
       </div>
 
       {excerpt ? (
-        <p className="mt-3 max-w-[65ch] font-sans text-base leading-relaxed text-foreground/90">
+        <p className="mt-3 max-w-[150ch] font-sans text-base leading-relaxed text-foreground/90">
           {excerpt}
         </p>
       ) : null}

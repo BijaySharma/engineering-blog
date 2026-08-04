@@ -4,15 +4,15 @@ import { getAllPosts } from "@/lib/posts";
 
 const FOCUS_AREAS = [
   {
+    title: "Agentic backend systems",
+    body: "I build multi-agent workflows with LangGraph and MCP, modeling agent handoffs as explicit state graphs rather than one long prompt, so different steps can use different tools, context, and failure handling.",
+  },
+  {
     title: "Kubernetes-native systems",
     body: "I write custom controllers and CRDs that teach Kubernetes new vocabulary — reconciliation loops that continuously bring a cluster's real state in line with its declared spec, and service mesh configuration for traffic that has to survive rollouts and failures.",
   },
   {
-    title: "Agentic AI infra",
-    body: "I build multi-agent workflows with LangGraph, modeling agent handoffs as explicit state graphs rather than one long prompt, so different steps can use different tools, context, and failure handling.",
-  },
-  {
-    title: "Distributed systems fundamentals",
+    title: "Distributed systems",
     body: "Kafka for durable event streams, Temporal for long-running workflows that have to survive restarts, and consensus/reconciliation patterns for keeping distributed state convergent under partial failure.",
   },
 ];
@@ -21,20 +21,22 @@ export default function Home() {
   const recentPosts = getAllPosts().slice(0, 3);
 
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-20 px-6 py-16 sm:py-20">
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-20 px-6 py-16 sm:py-20">
       {/* Hero */}
       <section className="animate-fade-slide-up">
         <p className="font-sans text-sm font-medium uppercase tracking-wide text-muted">
           Bijay Sharma
         </p>
         <h1 className="mt-3 max-w-[20ch] font-serif text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
-          Software engineer building infrastructure for the agentic era
+          Software engineer building agentic backend systems
         </h1>
-        <p className="mt-5 max-w-[65ch] font-sans text-base leading-relaxed text-muted sm:text-lg">
-          At Acquia, I work on Kubernetes operators and distributed systems,
-          and increasingly on agentic AI tooling built with LangGraph and
-          LangChain. I&apos;m CKAD certified and spend a fair amount of time
-          in the space between infrastructure and orchestration.
+        <p className="mt-5 max-w-[150ch] font-sans text-base leading-relaxed text-muted sm:text-lg">
+          At Acquia, I build agentic backend systems — multi-agent workflows
+          and tooling with LangGraph, LangChain, and MCP. Before this I spent
+          time in platform engineering: Kubernetes operators, control/data
+          plane architecture, and distributed systems (Kafka, Temporal).
+          I&apos;m CKAD certified and still spend a lot of time where
+          orchestration meets infra.
         </p>
       </section>
 

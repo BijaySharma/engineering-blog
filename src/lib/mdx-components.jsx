@@ -1,3 +1,10 @@
+import { Mermaid } from "@/components/Mermaid";
+
+function getCodeChild(preProps) {
+  const child = preProps.children;
+  return child && child.props && child.props.className ? child : null;
+}
+
 export const mdxComponents = {
   h1: (props) => (
     <h1 className="font-serif text-3xl mt-12 mb-6" {...props} />
@@ -20,12 +27,18 @@ export const mdxComponents = {
     <ol className="list-decimal pl-6 mb-5 space-y-2" {...props} />
   ),
   li: (props) => <li className="leading-relaxed" {...props} />,
-  pre: (props) => (
-    <pre
-      className="rounded-md border border-border bg-muted/30 p-4 overflow-x-auto mb-6"
-      {...props}
-    />
-  ),
+  pre: (props) => {
+    const codeChild = getCodeChild(props);
+    if (codeChild && codeChild.props.className.includes("language-mermaid")) {
+      return <Mermaid chart={codeChild.props.children} />;
+    }
+    return (
+      <pre
+        className="rounded-md border border-border bg-muted/30 p-4 overflow-x-auto mb-6"
+        {...props}
+      />
+    );
+  },
   code: (props) => {
     // Fenced code blocks are rendered as <pre><code className="language-*">
     // by rehype-highlight; inline code has no className. Only style inline

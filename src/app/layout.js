@@ -24,7 +24,7 @@ export const metadata = {
     template: "%s | Bijay Sharma",
   },
   description:
-    "Software engineer building infrastructure for the agentic era. Writing on Kubernetes operators, distributed systems, and agentic AI tooling.",
+    "Software engineer building agentic backend systems. Writing on agentic AI tooling, Kubernetes operators, and distributed systems.",
 };
 
 export default function RootLayout({ children }) {

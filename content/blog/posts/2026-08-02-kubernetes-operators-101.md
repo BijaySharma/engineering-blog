@@ -9,6 +9,14 @@ draft: false
 
 Kubernetes ships with a fixed vocabulary of built-in objects: Pods, Services, Deployments, ConfigMaps. That vocabulary covers a huge share of what you need to run stateless workloads, but it has nothing to say about the operational knowledge required to run, say, a PostgreSQL cluster with replication and failover, or a Kafka cluster with careful broker rebalancing. An operator is how you teach Kubernetes that missing vocabulary. It is a piece of software, running inside the cluster, that extends the Kubernetes API with a new kind of object and then continuously works to make the real world match what that object describes.
 
+```mermaid
+  graph TD;
+      A-->B;
+      A-->C;
+      B-->D;
+      C-->D;
+```
+
 The mechanism behind this has two halves. The first is a Custom Resource Definition, or CRD, which registers a new resource type with the API server. Once a CRD for, say, `PostgresCluster` exists, you can `kubectl apply` a YAML manifest describing a `PostgresCluster` the same way you would a Deployment, and the API server will store it, validate it against a schema, and serve it back through the normal Kubernetes API. On its own a CRD is inert — it's just structured storage. The second half is the controller: a process that watches for `PostgresCluster` objects and does whatever work is needed to bring the cluster's actual state in line with the object's desired state. The combination of a CRD plus a controller written to manage it is what people mean by "an operator."
 
 The core of every controller is the reconciliation loop, and it's worth walking through concretely because the pattern is deceptively simple and shows up everywhere in Kubernetes' own internals, not just in third-party operators. A reconciler is a function that takes the identity of one object — say, `PostgresCluster "orders-db"` — and does three things: read the object's current spec (the desired state, as the user wrote it), read the current state of the world (query the actual StatefulSet, Pods, and PersistentVolumeClaims that back this cluster), and then compute and apply whatever changes close the gap between the two. Critically, the loop does not try to be clever about *what changed* since the last run. It re-derives the correct action from scratch every time it fires, which is what makes it resilient to missed events, restarts, and races — if the controller crashes mid-reconciliation, the next run just recomputes the diff and continues, with no lost state to recover.

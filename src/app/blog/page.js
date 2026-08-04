@@ -11,7 +11,7 @@ export default function BlogIndex() {
   const posts = getAllPosts();
 
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-6 py-16 sm:py-20">
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-6 py-16 sm:py-20">
       <section>
         <h1 className="font-serif text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
           Blog

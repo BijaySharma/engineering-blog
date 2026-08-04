@@ -9,7 +9,7 @@ const NAV_LINKS = [
 export default function Header() {
   return (
     <header className="border-b border-border">
-      <div className="mx-auto flex max-w-3xl items-center justify-between gap-6 px-6 py-5">
+      <div className="mx-auto flex max-w-5xl items-center justify-between gap-6 px-6 py-5">
         <Link
           href="/"
           className="font-serif text-xl font-semibold tracking-tight text-foreground transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
