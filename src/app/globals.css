@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens: light is the default palette, dark overrides via the
+ * `data-theme="dark"` attribute that next-themes applies to <html>.
+ * Values must match Global Constraints exactly.
+ */
+:root,
+[data-theme="light"] {
+  --background: #fafaf9;
+  --foreground: #1a1a1a;
+  --accent: #3b5d8c;
+  --muted: #6b6b68;
+  --border: #e4e2dd;
+}
+
+[data-theme="dark"] {
+  --background: #131315;
+  --foreground: #ededeb;
+  --accent: #7fa3cc;
+  --muted: #8a8a87;
+  --border: #2a2a2c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-source-serif);
+}
+
+/*
+ * Subtle entrance animation for the landing page hero. Only applied when
+ * the user has no preference against motion — `prefers-reduced-motion`
+ * gates the keyframes entirely rather than shortening/disabling them, so
+ * reduced-motion users simply see the final state with no animation.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes fade-slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-slide-up {
+    animation: fade-slide-up 0.6s ease-out both;
+  }
+}
+
+/*
+ * rehype-highlight token colors for fenced code blocks. Kept restrained
+ * (design-token colors only, no imported dev-tool theme) per the "no
+ * terminal/hacker aesthetic" guardrail — differentiation comes from
+ * color/weight/italics within the existing palette, not new hues.
+ */
+.hljs-comment,
+.hljs-quote {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link,
+.hljs-string,
+.hljs-title,
+.hljs-name,
+.hljs-type,
+.hljs-attribute,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+  color: var(--accent);
+}
+
+.hljs-deletion,
+.hljs-number {
+  color: var(--muted);
+}
+
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-emphasis {
+  font-weight: 600;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}
