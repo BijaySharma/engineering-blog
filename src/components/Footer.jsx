@@ -1,7 +1,7 @@
 const FOOTER_LINKS = [
-  { href: "#github", label: "GitHub" },
-  { href: "#linkedin", label: "LinkedIn" },
-  { href: "mailto:you@example.com", label: "Email" },
+  { href: "https://github.com/BijaySharma", label: "GitHub" },
+  { href: "https://linkedin.com/in/bijay-sharma", label: "LinkedIn" },
+  { href: "mailto:bijay.sharma.swe@gmail.com", label: "Email" },
   { href: "/resume.pdf", label: "Resume" },
 ];
 

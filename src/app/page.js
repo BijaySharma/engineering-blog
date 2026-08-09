@@ -94,20 +94,6 @@ export default function Home() {
           </p>
         )}
       </section>
-
-      {/* Currently learning */}
-      <section aria-labelledby="currently-learning-heading">
-        <h2
-          id="currently-learning-heading"
-          className="font-serif text-2xl font-semibold text-foreground"
-        >
-          Currently learning
-        </h2>
-        <p className="mt-3 font-sans text-base text-muted">
-          Currently deep in distributed systems + DSA prep — writing up what
-          I learn.
-        </p>
-      </section>
     </main>
   );
 }
